@@ -2,7 +2,10 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-async function addUsers() {
+async function addData() {
+    await prisma.user.deleteMany();
+    await prisma.currency.deleteMany();
+    
     await prisma.user.createMany({
         data: [
             {
@@ -17,9 +20,26 @@ async function addUsers() {
             }
         ]
     });
+
+    await prisma.currency.createMany({
+        data: [
+            {
+                name: "ليرة سورية",
+                code: "L.S"
+            },
+            {
+                name: "دولار",
+                code: "USD"
+            },
+            {
+                name: "يورو",
+                code: "EUR"
+            },
+        ]
+    });
 }
 
-addUsers()
+addData()
     .then(() => {
         console.log('Seed data successfully added.');
     })

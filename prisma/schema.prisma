@@ -8,12 +8,53 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  userName String  @unique
-  password String
-  isAdmin  Boolean @default(false)
-
+  id        Int      @id @default(autoincrement())
+  userName  String   @unique
+  password  String
+  isAdmin   Boolean  @default(false)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  // Relations
+  transactions Transaction[]
 }
 
+model Currency {
+  currencyId Int     @id @default(autoincrement())
+  name       String  @unique
+  code       String?
+
+  // Relations
+  incomingExchangeRates ExchangeRate[] @relation("IncomingCurrency")
+  outgoingExchangeRates ExchangeRate[] @relation("OutgoingCurrency")
+}
+
+model ExchangeRate {
+  rateId       Int      @id @default(autoincrement())
+  exchangeRate Decimal
+  createDate   DateTime @default(now())
+
+  // Relations
+  incomingCurrency Currency      @relation("IncomingCurrency", fields: [incomingCurrencyId], references: [currencyId])
+  outgoingCurrency Currency      @relation("OutgoingCurrency", fields: [outgoingCurrencyId], references: [currencyId])
+  transactions     Transaction[]
+
+  // Foreign keys
+  incomingCurrencyId Int
+  outgoingCurrencyId Int
+}
+
+model Transaction {
+  transactionId  Int      @id @default(autoincrement())
+  createDate     DateTime @default(now())
+  incomingAmount Decimal
+  outgoingAmount Decimal
+  note          String?
+
+  // Relations
+  exchangeRate ExchangeRate @relation(fields: [exchangeRateId], references: [rateId])
+  user         User         @relation(fields: [userId], references: [id])
+
+  // Foreign keys
+  exchangeRateId Int
+  userId         Int
+}
