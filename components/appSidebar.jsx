@@ -1,9 +1,10 @@
 'use client';
-import { Calendar, Home, Users, Search, Settings } from "lucide-react";
+import { Home, Users, Search, Settings } from "lucide-react";
 
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
@@ -12,33 +13,39 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { signOutUser } from "@/actions/auth";
 
-// Menu items.
-const items = [
-    {
-        title: "Home",
-        url: "/",
-        icon: Home,
-    },
-    {
-        title: "Search",
-        url: "/search",
-        icon: Search,
-    },
-    {
-        title: "Users",
-        url: "/users",
-        icon: Users,
-    },
-    {
-        title: "Settings",
-        url: "/settings",
-        icon: Settings,
-    },
-];
+export function AppSidebar({ user }) {
+    const adminItems = [
+        {
+            title: "بحث",
+            url: "/dashboard/search",
+            icon: Search,
+        },
+        {
+            title: "المستخدمون",
+            url: "/dashboard/users",
+            icon: Users,
+        }
+    ]
 
-export function AppSidebar() {
+    const items = [
+        {
+            title: "ايداع",
+            url: "/dashboard",
+            icon: Home,
+        },
+        {
+            title: "الاعدادات",
+            url: "/dashboard/settings",
+            icon: Settings,
+        },
+    ];
+    if (user.isAdmin) {
+        items.push(...adminItems)
+    }
+
     const pathName = usePathname();
     return (
         <Sidebar>
@@ -61,6 +68,15 @@ export function AppSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+            <SidebarFooter>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton onClick={() => signOutUser()} size="lg">
+                            تسجيل الخروج
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarFooter>
         </Sidebar>
     );
 }

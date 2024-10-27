@@ -1,28 +1,19 @@
-import { Roboto } from 'next/font/google';
+import React from 'react'
 import "./globals.css";
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/appSideBar';
-import Navbar from '@/components/nav/navbar';
 
-const roboto = Roboto({ weight: ['400', '700'], subsets: ['latin'] });
+// TODO: add a local font
 
 export const metadata = {
   title: "XChange",
   description: "created by mohammed al-ali",
 };
 
-export default function RootLayout({ children }) {
+export default function BaseLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} antialiased`}>
-        <SidebarProvider>
-          <AppSidebar />
-          <Navbar />
-          <main className='container mt-16'>
-            {children}
-          </main>
-        </SidebarProvider>
+      <body className={`antialiased`}>
+        {children}
       </body>
     </html>
-  );
+  )
 }
