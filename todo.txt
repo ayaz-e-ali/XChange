@@ -1,9 +1,0 @@
-add local font
-
-use env file
-
-add market logo
-
-omit password
-
-add error and 404 and loading pages
