@@ -86,5 +86,5 @@
 }
 
 .container {
-  @apply max-w-[100%] md:max-w-[540%] lg:max-w-[992px] xl:max-w-[1200px] 2xl:max-w-[1400px] sm:min-w-[650px] mx-auto px-6;
+  @apply max-w-[100%] md:max-w-[540%] lg:max-w-[1200px] xl:max-w-[1400px] 2xl:max-w-[1600px] sm:min-w-[650px] mx-auto px-6;
 }

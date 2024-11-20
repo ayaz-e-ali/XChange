@@ -1,0 +1,1 @@
+del "prisma\db.db" && npm i && npm run migrate && npm run generate && npm run seed && npm run start && npm run monit

@@ -1,8 +1,13 @@
+import TransactionsAddForm from "@/components/forms/TransactionAddForm";
+import { prisma } from "@/prisma/db";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+
+  const currencies = await prisma.currency.findMany()
+
   return (
-    <div >
-      
+    <div>
+      <TransactionsAddForm currencies={currencies} /> 
     </div>
   );
 }

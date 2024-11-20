@@ -26,11 +26,12 @@ model Currency {
   // Relations
   incomingExchangeRates ExchangeRate[] @relation("IncomingCurrency")
   outgoingExchangeRates ExchangeRate[] @relation("OutgoingCurrency")
+  depts                 debts[]
 }
 
 model ExchangeRate {
   rateId       Int      @id @default(autoincrement())
-  exchangeRate Decimal
+  exchangeRate Int
   createDate   DateTime @default(now())
 
   // Relations
@@ -46,15 +47,33 @@ model ExchangeRate {
 model Transaction {
   transactionId  Int      @id @default(autoincrement())
   createDate     DateTime @default(now())
-  incomingAmount Decimal
-  outgoingAmount Decimal
-  note          String?
+  incomingAmount Int
+  outgoingAmount Int
+  name           String?
+  note           String?
 
   // Relations
-  exchangeRate ExchangeRate @relation(fields: [exchangeRateId], references: [rateId])
-  user         User         @relation(fields: [userId], references: [id])
+  exchangeRate ExchangeRate? @relation(fields: [exchangeRateId], references: [rateId], onDelete: Cascade)
+  user         User?         @relation(fields: [userId], references: [id])
 
   // Foreign keys
   exchangeRateId Int
   userId         Int
+}
+
+model App {
+  id         Int    @id @default(autoincrement())
+  marketName String
+  version    String
+}
+
+model debts {
+  id         Int      @id @default(autoincrement())
+  name       String
+  amount     Int
+  currency   Currency @relation(fields: [currencyId], references: [currencyId])
+  currencyId Int
+  forUs      Boolean
+
+  createDate DateTime @default(now())
 }

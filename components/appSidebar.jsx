@@ -1,5 +1,5 @@
 'use client';
-import { Home, Users, Search, Settings } from "lucide-react";
+import { Home, Users, Search, Settings, HandCoins } from "lucide-react";
 
 import {
     Sidebar,
@@ -19,11 +19,6 @@ import { signOutUser } from "@/actions/auth";
 export function AppSidebar({ user }) {
     const adminItems = [
         {
-            title: "بحث",
-            url: "/dashboard/search",
-            icon: Search,
-        },
-        {
             title: "المستخدمون",
             url: "/dashboard/users",
             icon: Users,
@@ -35,6 +30,16 @@ export function AppSidebar({ user }) {
             title: "ايداع",
             url: "/dashboard",
             icon: Home,
+        },
+        {
+            title: "عمليات الايداع",
+            url: "/dashboard/search",
+            icon: Search,
+        },
+        {
+            title: "الديون",
+            url: "/dashboard/debts",
+            icon: HandCoins,
         },
         {
             title: "الاعدادات",

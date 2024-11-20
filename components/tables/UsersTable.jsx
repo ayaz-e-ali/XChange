@@ -4,8 +4,14 @@ import { Check, X } from "lucide-react"
 import { Button } from "../ui/button"
 import { deleteUser } from "@/actions/user"
 
-export default function UsersTable({ users }) {
-
+export default function UsersTable({ users, onClick, revalidate }) {
+    
+    const handleDeleteButton = async (e, user) => {
+        e.stopPropagation();
+        await deleteUser(user.id, user.userName);
+        revalidate()
+    }
+    
     return (
         <Table>
             {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
@@ -19,10 +25,10 @@ export default function UsersTable({ users }) {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {users.map((user) => (
-                    <TableRow key={user.id}>
+                {users[0] && users.map((user) => (
+                    <TableRow key={user.id} onClick={() => onClick(user)}>
                         <TableCell className="text-right font-medium">
-                            <Button onClick={() => { deleteUser(user.id) }} variant='destructive'>حذف المستخدم</Button>
+                            <Button size="xs" onClick={(e) => handleDeleteButton(e, user)} variant='destructive'>حذف المستخدم</Button>
                         </TableCell>
                         <TableCell className="text-right font-medium">{user.createdAt.toDateString()}</TableCell>
                         <TableCell className="flex place-self-end font-medium">

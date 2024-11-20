@@ -5,23 +5,20 @@ const prisma = new PrismaClient();
 async function addData() {
     await prisma.user.deleteMany();
     await prisma.currency.deleteMany();
-    
-    await prisma.user.createMany({
+
+    //users
+    const users = await prisma.user.createMany({
         data: [
             {
                 userName: "Admin",
-                password: "$2b$10$fMjGRL.LanA2WAQHVtgRke3rhMqTRWpEj2pSiefjU9EhTCy0Vhs6.",
+                password: "$2b$10$O/tjEgoSF3Tr9NSOeCjqsearxtv7GMWeROTmgYbLsHTCzoQyFXsEC",
                 isAdmin: true,
-            },
-            {
-                userName: "User",
-                password: "$2b$10$mAA7m7848QWAfh6OK/ghRuC7BBijhqlrwM4vBmdMK.6nJKbUaCnma",
-                isAdmin: false,
             }
         ]
     });
 
-    await prisma.currency.createMany({
+    //currencies
+    const currencies = await prisma.currency.createMany({
         data: [
             {
                 name: "ليرة سورية",
@@ -34,9 +31,17 @@ async function addData() {
             {
                 name: "يورو",
                 code: "EUR"
-            },
+            }
         ]
     });
+
+    // App 
+    const app = await prisma.app.create({
+        data: {
+            marketName: "شركة صرافة",
+            version: "1.0.0 Beta"
+        }
+    })
 }
 
 addData()

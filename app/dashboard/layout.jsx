@@ -1,4 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/appSideBar';
 import Navbar from '@/components/nav/navbar';
 import { getCurrentUser } from '@/lib/auth';
