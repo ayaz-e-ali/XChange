@@ -33,8 +33,8 @@ export default function TransactionsTable({ transactions, revalidate }) {
                 {transactions.map((transaction) => (
                     <TransactionDialog revalidate={revalidate} key={transaction.transactionId} transaction={transaction}>
                         <TableRow >
-                            <TableCell className="text-right font-medium">
-                                <Button size="xs" onClick={(e) => handleDeleteButton(e, transaction)} variant='destructive'>حذف الايداع</Button>
+                            <TableCell className="text-right w-8 font-medium">
+                                <Button size="xs" onClick={(e) => handleDeleteButton(e, transaction)} variant='destructive'>حذف</Button>
                             </TableCell>
                             <TableCell dir={"rtl"} className="text-right font-medium max-w-72 line-clamp-1 leading-8">{transaction.note}</TableCell>
                             <TableCell className="text-right font-medium">{transaction.createDate.toLocaleDateString('ar-EG')}</TableCell>

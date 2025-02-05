@@ -25,7 +25,7 @@ export function TransactionDialog({ children, transaction, revalidate }) {
     const [note, setNote] = useState(transaction.note)
 
     const onClickHandler = async (e) => {
-        updateTransaction({
+        await updateTransaction({
             id: transaction.transactionId,
             name,
             exchangeRate,

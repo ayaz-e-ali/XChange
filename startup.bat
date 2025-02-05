@@ -1,0 +1,1 @@
+START cmd /K "pm2 start"
