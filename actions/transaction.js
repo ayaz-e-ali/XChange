@@ -7,6 +7,10 @@ import { revalidatePath } from "next/cache";
 export const addTransaction = async (prevState, formData) => {
     try {
         const user = await getCurrentUser();
+        if (!user.isAdmin) {
+            return { message: "لا يسمح للمستخدمين غير الإداريين بإضافة المعاملات", error: true };
+        }
+
         const incomingAmount = +formData.get("incomingAmount");
         const outgoingAmount = +formData.get("outgoingAmount");
         const incomingCurrencyId = +formData.get("incomingCurrencyId");
@@ -16,43 +20,77 @@ export const addTransaction = async (prevState, formData) => {
         const note = formData.get("note");
 
         if (incomingCurrencyId === outgoingCurrencyId) {
-            return { message: 'لا يمكن ان تطابق العملة الواردة مع العملة الصادرة' };
+            return { message: "لا يمكن أن تطابق العملة الواردة مع العملة الصادرة", error: true };
         }
-        
+
         // Define a tolerance for floating-point calculations
         const tolerance = 0.0001;
-
         const isValidIncoming = Math.abs(outgoingAmount * exchangeRate - incomingAmount) <= tolerance;
         const isValidOutgoing = Math.abs(incomingAmount * exchangeRate - outgoingAmount) <= tolerance;
 
         if (!isValidIncoming && !isValidOutgoing) {
             return {
-                message: `الحساب غير صحيح. تأكد من أن المبلغ الوارد أو الصادر متوافق مع سعر الصرف.`,
-                error: true
+                message: "الحساب غير صحيح. تأكد من أن المبلغ الوارد أو الصادر متوافق مع سعر الصرف.",
+                error: true,
             };
         }
 
-        await prisma.transaction.create({
-            data: {
-                incomingAmount,
-                outgoingAmount,
-                exchangeRate: {
-                    create: { exchangeRate, incomingCurrencyId, outgoingCurrencyId }
-                },
-                note,
-                name,
-                user: {
-                    connect: { id: user.id }
-                }
+        const transactionResult = await prisma.$transaction(async (prisma) => {
+            // Check stock availability for outgoing currency
+            const outgoingStock = await prisma.stock.findUnique({
+                where: { currencyId: outgoingCurrencyId },
+            });
+
+            if (!outgoingStock || outgoingStock.amount < outgoingAmount) {
+                throw new Error("المخزون غير كافٍ لإتمام العملية."); // Throw error instead of returning
             }
+
+            // Deduct outgoing amount from stock
+            await prisma.stock.update({
+                where: { currencyId: outgoingCurrencyId },
+                data: { amount: { decrement: outgoingAmount } },
+            });
+
+            // Add incoming amount to stock (or create stock if it doesn't exist)
+            const incomingStock = await prisma.stock.findUnique({
+                where: { currencyId: incomingCurrencyId },
+            });
+
+            if (incomingStock) {
+                await prisma.stock.update({
+                    where: { currencyId: incomingCurrencyId },
+                    data: { amount: { increment: incomingAmount } },
+                });
+            } else {
+                await prisma.stock.create({
+                    data: { amount: incomingAmount, currencyId: incomingCurrencyId },
+                });
+            }
+
+            // Create the transaction record
+            return prisma.transaction.create({
+                data: {
+                    incomingAmount,
+                    outgoingAmount,
+                    exchangeRate: {
+                        create: { exchangeRate, incomingCurrencyId, outgoingCurrencyId }
+                    },
+                    note,
+                    name,
+                    user: {
+                        connect: { id: user.id },
+                    },
+                },
+            });
         });
-        revalidatePath('/dashboard/search');
-        return { message: 'تم الاضافة بنجاح' };
+
+        return { message: "تمت إضافة المعاملة وتحديث المخزون بنجاح", transaction: transactionResult };
     } catch (e) {
-        console.error(e);
-        return { message: `Failed to add transaction :${e}`, error: true };
+        console.error("Error adding transaction:", e);
+        return { message: `حدث خطأ أثناء إضافة المعاملة: ${e.message}`, error: true };
     }
 };
+
 
 export const deleteTransaction = async (transactionId) => {
     try {
@@ -80,7 +118,7 @@ export const getTransaction = async (dateStart, dateFinish, name) => {
 
     let finish;
     if (dateFinish) {
-        finish = new Date(dateFinish)
+        finish = new Date(dateFinish);
         finish.setDate(finish.getDate() + 1);
     }
 
@@ -98,8 +136,8 @@ export const getTransaction = async (dateStart, dateFinish, name) => {
         // Case 3: Only finish date is provided
         dateFilter = { lte: finish };
     }
-    const where = { createDate: dateFilter }
-    if (name) where.name = { contains: name }
+    const where = { createDate: dateFilter };
+    if (name) where.name = { contains: name };
 
     const transactions = await prisma.transaction.findMany({
         include: {
@@ -118,10 +156,10 @@ export const getTransaction = async (dateStart, dateFinish, name) => {
         orderBy: { createDate: "desc" },
     });
 
-    const stats = await getStatistics(where)
+    const stats = await getStatistics(where);
 
     return { transactions, stats };
-}
+};
 
 const getStatistics = async (where) => {
     // Step 1: Aggregate incoming and outgoing amounts
@@ -212,4 +250,4 @@ export const updateTransaction = async ({ id, name, exchangeRate, outgoingAmount
         console.error(e);
         return { message: 'Failed to uddate transaction', error: true };
     }
-}
+};

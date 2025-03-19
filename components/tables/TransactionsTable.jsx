@@ -1,18 +1,23 @@
-'use client'
+'use client';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
-import { formatCurrency } from "@/lib/utils"
-import { Button } from "../ui/button"
-import { deleteTransaction } from "@/actions/transaction"
-import { TransactionDialog } from "../dialogs/TransactionDialog"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table";
+import { formatCurrency } from "@/lib/utils";
+import { Button } from "../ui/button";
+import { deleteTransaction } from "@/actions/transaction";
+import { TransactionDialog } from "../dialogs/TransactionDialog";
 
+/**
+ * 
+ * @param {{transactions : {createDate:Date}}} param0 
+ * @returns 
+ */
 export default function TransactionsTable({ transactions, revalidate }) {
-
+    
     const handleDeleteButton = async (e, transaction) => {
         e.stopPropagation();
         await deleteTransaction(transaction.transactionId);
-        revalidate()
-    }
+        revalidate();
+    };
 
     return (
         <Table>
@@ -37,7 +42,7 @@ export default function TransactionsTable({ transactions, revalidate }) {
                                 <Button size="xs" onClick={(e) => handleDeleteButton(e, transaction)} variant='destructive'>حذف</Button>
                             </TableCell>
                             <TableCell dir={"rtl"} className="text-right font-medium max-w-72 line-clamp-1 leading-8">{transaction.note}</TableCell>
-                            <TableCell className="text-right font-medium">{transaction.createDate.toLocaleDateString('ar-EG')}</TableCell>
+                            <TableCell className="text-right font-medium">{transaction.createDate.toLocaleString('ar-EG',{hour12: true, year: '2-digit', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'})} </TableCell>
                             <TableCell className="text-right font-medium">{formatCurrency(transaction.exchangeRate.exchangeRate)}</TableCell>
                             <TableCell className="text-right font-medium">{formatCurrency(transaction.outgoingAmount)} {transaction.exchangeRate.outgoingCurrency.code}</TableCell>
                             <TableCell className="text-right font-medium">{formatCurrency(transaction.incomingAmount)} {transaction.exchangeRate.incomingCurrency.code}</TableCell>
@@ -48,5 +53,5 @@ export default function TransactionsTable({ transactions, revalidate }) {
                 ))}
             </TableBody>
         </Table>
-    )
+    );
 }

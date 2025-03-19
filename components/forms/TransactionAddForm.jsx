@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import { useFormState } from 'react-dom'
-import { Input } from '../ui/input'
-import Submit from '../ui/SubmitButton'
-import { addTransaction } from '@/actions/transaction'
-import { Label } from '../ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
-import { Textarea } from '../ui/textarea'
-import { useToast } from "@/hooks/use-toast"
-import { useEffect, useRef } from 'react'
+import { useFormState } from 'react-dom';
+import { Input } from '../ui/input';
+import Submit from '../ui/SubmitButton';
+import { addTransaction } from '@/actions/transaction';
+import { Label } from '../ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Textarea } from '../ui/textarea';
+import { useToast } from "@/hooks/use-toast";
+import { useEffect, useRef } from 'react';
 
-const initState = { message: null }
+const initState = { message: null };
 
 export default function TransactionsAddForm({ currencies }) {
-    let [formState, action] = useFormState(addTransaction, initState)
+    let [formState, action] = useFormState(addTransaction, initState);
     const formRef = useRef();
-    const { toast } = useToast()
+    const { toast } = useToast();
 
     useEffect(() => {
         if (formState.message) {
@@ -26,16 +26,15 @@ export default function TransactionsAddForm({ currencies }) {
                     variant: "destructive"
                 });
             else {
-
                 toast({
                     title: "تحويلات",
                     description: formState.message,
                 });
-                resetForm(formRef, "exchangeRate")
+                resetForm(formRef, ["exchangeRate", "outgoingCurrencyId", "incomingCurrencyId"]);
             }
-            formState.message = null
+            formState.message = null;
         }
-    }, [formState, formState.message, toast])
+    }, [formState, formState.message, toast]);
 
     return (
         <form ref={formRef} action={action} className="p-3 flex flex-col gap-4 items-end">
@@ -50,7 +49,7 @@ export default function TransactionsAddForm({ currencies }) {
                 </div>
                 <div className="grid w-full gap-2 child:text-right">
                     <Label>العملة الصادرة</Label>
-                    <Select name="outgoingCurrencyId" defaultValue={"2"}>
+                    <Select name="outgoingCurrencyId" defaultValue='2' >
                         <SelectTrigger tabIndex="4" className="w-full">
                             <SelectValue placeholder="" />
                         </SelectTrigger>
@@ -63,7 +62,7 @@ export default function TransactionsAddForm({ currencies }) {
                 </div>
                 <div className="grid w-full gap-2 child:text-right">
                     <Label>العملة الواردة</Label>
-                    <Select name="incomingCurrencyId" defaultValue={"1"}>
+                    <Select name="incomingCurrencyId" defaultValue='1'>
                         <SelectTrigger tabIndex="3" className="w-full">
                             <SelectValue placeholder="" />
                         </SelectTrigger>
@@ -90,15 +89,15 @@ export default function TransactionsAddForm({ currencies }) {
 
             <Submit tabIndex="8" label={'اضافة'} />
         </form>
-    )
+    );
 }
 
 
-const resetForm = (formRef, fieldNameToKeep) => {
+const resetForm = (formRef, fieldsToKeep = []) => {
     const elements = formRef.current.elements;
     for (let element of elements) {
-        if (element.name && element.name !== fieldNameToKeep) {
-            element.value = ""; // Reset value for all except the specified field
+        if (element.name && !fieldsToKeep.includes(element.name)) {
+            element.value = ""; // Reset value for all fields not in the `fieldsToKeep` array
         }
     }
 };

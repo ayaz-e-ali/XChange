@@ -7,7 +7,7 @@ export default async function Dashboard() {
 
   return (
     <div>
-      <TransactionsAddForm currencies={currencies} /> 
+      <TransactionsAddForm currencies={currencies} />
     </div>
   );
 }

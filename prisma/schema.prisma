@@ -27,6 +27,7 @@ model Currency {
   incomingExchangeRates ExchangeRate[] @relation("IncomingCurrency")
   outgoingExchangeRates ExchangeRate[] @relation("OutgoingCurrency")
   depts                 debts[]
+  Stock                 Stock[]
 }
 
 model ExchangeRate {
@@ -74,6 +75,15 @@ model debts {
   currency   Currency @relation(fields: [currencyId], references: [currencyId])
   currencyId Int
   forUs      Boolean
+
+  createDate DateTime @default(now())
+}
+
+model Stock {
+  stockId    Int      @id @default(autoincrement())
+  amount     Int      @default(0)
+  currency   Currency @relation(fields: [currencyId], references: [currencyId])
+  currencyId Int      @unique
 
   createDate DateTime @default(now())
 }

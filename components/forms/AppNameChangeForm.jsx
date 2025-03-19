@@ -1,13 +1,10 @@
-
 'use client'
 
-import { addCurrency } from "@/actions/currency"
 import { Input } from "../ui/input"
 import Submit from "../ui/SubmitButton"
 import { useFormState } from 'react-dom'
 import { useRef, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
-import { prisma } from "@/prisma/db"
 import { useState } from "react"
 import { getApp, updateMarketName } from "@/actions/app"
 
