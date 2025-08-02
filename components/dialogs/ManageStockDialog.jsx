@@ -17,13 +17,14 @@ import { useState } from "react";
 import { AddToStock, SubtractFromStock } from "@/actions/stock";
 import { cn } from "@/lib/utils";
 import { set } from "zod";
+import { useTranslations } from "next-intl";
 
 export function ManageStockDialog({ children, revalidate, currencies }) {
     const [amount, setAmount] = useState(0);
     const [currency, setCurrency] = useState("1");
     const [message, setMessage] = useState('');
     const [error, setError] = useState(false);
-
+    const t = useTranslations('Settings');
     const data = currencies.map((currency) => ({
         name: currency.name,
         value: currency.Stock[0]?.amount || 0,
@@ -50,11 +51,11 @@ export function ManageStockDialog({ children, revalidate, currencies }) {
             </AlertDialogTrigger>
             <AlertDialogContent className="child:mx-auto min-w-max">
                 <AlertDialogHeader >
-                    <AlertDialogTitle>ادارة الخزينة</AlertDialogTitle>
+                    <AlertDialogTitle>{t('manageVault')}</AlertDialogTitle>
                     <div className="grid grid-cols-2 items-center gap-10">
                         <AlertDialogDescription>
                             <div className="space-y-2 ">
-                                <h4 className="text-lg">الخزينة</h4>
+                                <h4 className="text-lg">{t('vault')}</h4>
                                 {data.map((item, index) => (
                                     <div key={index} className="flex items-center justify-between border-b ">
                                         <div className="flex items-center p-1 gap-2">
@@ -70,17 +71,17 @@ export function ManageStockDialog({ children, revalidate, currencies }) {
 
                         <div className="flex flex-col gap-3 w-full items-center">
                             <AlertDialogDescription className='flex gap-2 items-center w-full'>
-                                القيمة: <Input tabIndex="2" className="flex-1 px-2 py-1 text-sm" required value={amount} onChange={(e) => setAmount(e.target.value)} type="number" />
+                                {t('amount')}: <Input tabIndex="2" className="flex-1 px-2 py-1 text-sm" required value={amount} onChange={(e) => setAmount(e.target.value)} type="number" />
                             </AlertDialogDescription>
                             <AlertDialogDescription className='flex gap-2 items-center w-full'>
-                                العملة: <CurrencySelector currencies={currencies} onChange={(value) => setCurrency(value)} />
+                                {t('currency')}: <CurrencySelector currencies={currencies} onChange={(value) => setCurrency(value)} />
                             </AlertDialogDescription>
                             <div className="flex gap-2">
                                 <AlertDialogDescription>
-                                    <Button onClick={handleAdd}>اضافة</Button>
+                                    <Button onClick={handleAdd}>{t('add')}</Button>
                                 </AlertDialogDescription>
                                 <AlertDialogDescription>
-                                    <Button onClick={handleSubtract} variant='destructive'>سحب</Button>
+                                    <Button onClick={handleSubtract} variant='destructive'>{t('withdraw')}</Button>
                                 </AlertDialogDescription>
                             </div>
                             {message && <p className={cn('text-right text-sm', error && 'text-red-600')}>{message}</p>}
@@ -88,7 +89,7 @@ export function ManageStockDialog({ children, revalidate, currencies }) {
                     </div>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>خروج</AlertDialogCancel>
+                    <AlertDialogCancel>{t('exit')}</AlertDialogCancel>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

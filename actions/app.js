@@ -2,7 +2,9 @@
 
 import { getCurrentUser } from "@/lib/auth"
 import { prisma } from "@/prisma/db"
+import { getTranslations } from "next-intl/server"
 import { revalidatePath } from "next/cache"
+
 
 export const getApp = async () => {
     try {
@@ -16,9 +18,10 @@ export const getApp = async () => {
 export const updateMarketName = async (prevState, formData) => {
     try {
         const user = await getCurrentUser()
+        const t = await getTranslations("Messages");
 
         if (!user.isAdmin) {
-            return { message: "لا يسمح للمستخدمين تغير اسم المحل , راجع الادمن" }
+            return { message: t('appName-permissionDenied') }
         }
 
         const marketName = formData.get("appName")
@@ -30,9 +33,9 @@ export const updateMarketName = async (prevState, formData) => {
 
         revalidatePath('/dashboard')
 
-        return { message: "تم تعديل اسم المحل بنجاح" }
+        return { message: t('appName-updated') }
     } catch (error) {
         console.log(error);
-        return { message: "خطا في تعديل  اسم المحل", error: true }
+        return { message: t('appName-updateError'), error: true }
     }
 }

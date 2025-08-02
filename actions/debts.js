@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from "@/prisma/db";
+import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 
 export const addDebt = async (prevState, formData) => {
@@ -8,6 +9,8 @@ export const addDebt = async (prevState, formData) => {
     const amount = +formData.get("Amount");
     const currencyId = +formData.get("CurrencyId");
     const forUs = formData.get("forUs") == "forUs";
+
+    const t = await getTranslations("Messages");
 
     try {
         await prisma.debts.create({
@@ -19,10 +22,10 @@ export const addDebt = async (prevState, formData) => {
             }
         });
         revalidatePath('/dashboard/debts');
-        return { message: 'تم الاضافة بنجاح' };
+        return { message: t('debts-added') };
     } catch (e) {
         console.error(e);
-        return { message: 'Failed to add debt', error: true };
+        return { message: t('debts-addError'), error: true };
     }
 };
 
@@ -35,10 +38,10 @@ export const deleteDebts = async (debtId) => {
         });
 
         revalidatePath('/dashboard/debts');
-        return { message: "تم الحذف بنجاح" };
+        return { message: t('debts-Deleted') };
     } catch (e) {
         console.error(e);
-        return { message: 'Failed to Delete Debt', error: true };
+        return { message: t('debts-DeleteError'), error: true };
     }
 };
 
@@ -123,9 +126,9 @@ export const updateDebt = async ({ id, name, amount }) => {
         });
 
         revalidatePath('/dashboard/debts');
-        return { message: 'تم التحديث بنجاح' };
+        return { message: t('debts-updated') };
     } catch (e) {
         console.error(e);
-        return { message: 'Failed to update debt', error: true };
+        return { message: t('debts-updateError'), error: true };
     }
 };

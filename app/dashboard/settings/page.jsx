@@ -4,10 +4,13 @@ import AppNameChangeForm from '@/components/forms/AppNameChangeForm';
 import CurrencyAddForm from '@/components/forms/currencyAddForm';
 import StockManageForm from '@/components/forms/StockManageForm';
 import ThemeToggle from '@/components/ui/themeToggle';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 
 export default function Page() {
   const [currencies, setCurrencies] = useState([]);
+
+  const t = useTranslations('Settings');
 
   useEffect(() => {
     (async () => {
@@ -26,7 +29,7 @@ export default function Page() {
       <AppNameChangeForm />
       <CurrencyAddForm />
       <div className="flex flex-col items-center justify-center gap-4 ">
-        <p>الثيم الداكن و المضيئ</p>
+        <p>{t('theme')}</p>
         <ThemeToggle />
       </div>
       <StockManageForm currencies={currencies} revalidate={revalidate} />

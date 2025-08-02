@@ -2,13 +2,18 @@
 
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/prisma/db";
+import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 
 export const addTransaction = async (prevState, formData) => {
     try {
         const user = await getCurrentUser();
+
+        const t = await getTranslations("Messages");
+
+
         if (!user.isAdmin) {
-            return { message: "لا يسمح للمستخدمين غير الإداريين بإضافة المعاملات", error: true };
+            return { message: t('transaction-permissionDenied'), error: true };
         }
 
         const incomingAmount = +formData.get("incomingAmount");
@@ -20,7 +25,7 @@ export const addTransaction = async (prevState, formData) => {
         const note = formData.get("note");
 
         if (incomingCurrencyId === outgoingCurrencyId) {
-            return { message: "لا يمكن أن تطابق العملة الواردة مع العملة الصادرة", error: true };
+            return { message: t('transaction-currencyMismatch'), error: true };
         }
 
         // Define a tolerance for floating-point calculations
@@ -30,7 +35,7 @@ export const addTransaction = async (prevState, formData) => {
 
         if (!isValidIncoming && !isValidOutgoing) {
             return {
-                message: "الحساب غير صحيح. تأكد من أن المبلغ الوارد أو الصادر متوافق مع سعر الصرف.",
+                message: t('transaction-accountInvalid'),
                 error: true,
             };
         }
@@ -42,7 +47,7 @@ export const addTransaction = async (prevState, formData) => {
             });
 
             if (!outgoingStock || outgoingStock.amount < outgoingAmount) {
-                throw new Error("المخزون غير كافٍ لإتمام العملية."); // Throw error instead of returning
+                throw new Error(t('transaction-stockInsufficient')); // Throw error instead of returning
             }
 
             // Deduct outgoing amount from stock
@@ -84,10 +89,10 @@ export const addTransaction = async (prevState, formData) => {
             });
         });
 
-        return { message: "تمت إضافة المعاملة وتحديث المخزون بنجاح", transaction: transactionResult };
+        return { message: t('transaction-success'), transaction: transactionResult };
     } catch (e) {
         console.error("Error adding transaction:", e);
-        return { message: `حدث خطأ أثناء إضافة المعاملة: ${e.message}`, error: true };
+        return { message: `${t('transaction-addError')} ${e.message}`, error: true };
     }
 };
 
@@ -96,7 +101,7 @@ export const deleteTransaction = async (transactionId) => {
     try {
         const user = await getCurrentUser();
         if (!user.isAdmin)
-            return { message: "لا تملك صلاحية الحدف" };
+            return { message: t('transaction-Delete-permissionDenied') };
 
         const transaction = await prisma.transaction.delete({
             where: { transactionId }
@@ -109,7 +114,7 @@ export const deleteTransaction = async (transactionId) => {
         revalidatePath('/dashboard/search');
     } catch (e) {
         console.error(e);
-        return { message: `Failed to delete transaction ERROR:${e.message}` };
+        return { message: `${t('transaction-DeleteError')} ERROR:${e.message}` };
     }
 };
 
@@ -245,9 +250,9 @@ export const updateTransaction = async ({ id, name, exchangeRate, outgoingAmount
         });
 
         revalidatePath('/dashboard/search');
-        return { message: 'تم التعديل بنجاح' };
+        return { message: t('transaction-updated') };
     } catch (e) {
         console.error(e);
-        return { message: 'Failed to uddate transaction', error: true };
+        return { message: t('transaction-updateError'), error: true };
     }
 };

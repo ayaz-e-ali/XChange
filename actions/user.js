@@ -1,6 +1,7 @@
 'use server'
 import { getCurrentUser, hashPW } from "@/lib/auth";
 import { prisma } from "@/prisma/db";
+import { getTranslations } from "next-intl/server";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 /**
@@ -16,8 +17,10 @@ export const AddUser = async (prevState, formData) => {
         const password = formData.get("password")
         const isAdmin = !!formData.get("isAdmin") ?? false
 
+        const t = await getTranslations("Messages");
+
         if (userName == 'Admin')
-            return { error: 'لا يمكن تعديل مستخدم الادمن' }
+            return { error: t('user-adminEditDenied') }
 
 
         const hashedPW = await hashPW(password)
@@ -39,10 +42,10 @@ export const AddUser = async (prevState, formData) => {
         })
 
         revalidatePath('/dashboard/users')
-        return { message: 'تمت العملية بنجاح' }
+        return { message: t('user-success') }
     } catch (e) {
         console.error(e)
-        return { error: 'Failed to sign you up' }
+        return { error: t('user-signupError') }
     }
 }
 
@@ -51,20 +54,20 @@ export const deleteUser = async (userId, userName) => {
         const user = await getCurrentUser()
 
         if (userName == 'Admin')
-            return { error: 'لا يمكن حذف مستخدم الادمن' }
+            return { error: t('user-adminDeleteDenied') }
 
         if (+user.id === +userId)
-            return { error: "لا يمكنك حذف المستخدم الحالي" }
+            return { error: t('user-selfDeleteDenied') }
 
         await prisma.user.delete({
             where: { id: userId }
         })
 
         revalidatePath('/dashboard/users')
-        return { message: "تم الحذف بنجاح" }
+        return { message: t('user-Deleted') }
     } catch (e) {
         console.error(e)
-        return { error: `لا يمكن حذف المستخدم لانه يمتلك عمليات باسمه ` }
+        return { error: t('user-hasTransactions') }
     }
 }
 

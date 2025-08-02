@@ -7,12 +7,15 @@ import { useRef, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { useState } from "react"
 import { getApp, updateMarketName } from "@/actions/app"
+import { useTranslations } from "next-intl"
 
 const initState = { message: null }
 
 export default function AppNameChangeForm() {
     const [formState, action] = useFormState(updateMarketName, initState)
     const [appName, setAppName] = useState()
+
+    const t = useTranslations('Settings')
 
     const formRef = useRef();
     const { toast } = useToast()
@@ -46,9 +49,9 @@ export default function AppNameChangeForm() {
 
     return (
         <form action={action} ref={formRef} className="flex flex-col gap-2 items-center justify-center">
-            <h3 className="text-right">اسم المحل</h3>
-            <Input value={appName} onChange={(e) => setAppName(e.target.value)} className="w-full text-right" required name="appName" type="text" placeholder="اسم المحل" />
-            <Submit label={'حفظ'} />
+            <h3 className="text-right">{t('companyName')}</h3>
+            <Input value={appName} onChange={(e) => setAppName(e.target.value)} className="w-full text-right" required name="appName" type="text" placeholder={t('companyName')} />
+            <Submit label={t('save')} />
         </form>
     )
 }

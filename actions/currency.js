@@ -1,9 +1,12 @@
 'use server';
 import { prisma } from "@/prisma/db";
+import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 
 export const addCurrency = async (prevState, formData) => {
     try {
+        const t = await getTranslations("Messages");
+
         const name = formData.get("name");
         const code = formData.get("code");
 
@@ -14,10 +17,10 @@ export const addCurrency = async (prevState, formData) => {
             }
         });
         revalidatePath('/dashboard');
-        return { message: 'تم اضافة عملة بنجاح' };
+        return { message: t('currency-added') };
     } catch (e) {
         console.error(e);
-        return { error: 'Failed to add currency', error: true };
+        return { error: t('currency-addError'), error: true };
     }
 };
 

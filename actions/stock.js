@@ -2,13 +2,15 @@
 
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/prisma/db";
+import { getTranslations } from "next-intl/server";
 
 export const AddToStock = async (amount, currencyId) => {
     try {
         const user = await getCurrentUser();
+        const t = await getTranslations("Messages");
 
         if (!user.isAdmin) {
-            return { message: "لا يسمح للمستخدمين بالتعديل على المخزون، راجع الادمن", error: true };
+            return { message: t('stock-Edit-permissionDenied'), error: true };
         }
 
         // Check if stock for the given currency already exists
@@ -25,7 +27,7 @@ export const AddToStock = async (amount, currencyId) => {
                 },
             });
 
-            return { message: "تم تحديث المخزون بنجاح" };
+            return { message: t('stock-updated') };
         } else {
             // Create new stock entry
             await prisma.stock.create({
@@ -35,7 +37,7 @@ export const AddToStock = async (amount, currencyId) => {
                 },
             });
 
-            return { message: "تم إضافة المخزون بنجاح" };
+            return { message: t('stock-Edit-permissionDenied') };
         }
     } catch (e) {
         return { message: e.message };
@@ -47,7 +49,7 @@ export const SubtractFromStock = async (amount, currencyId) => {
         const user = await getCurrentUser();
 
         if (!user.isAdmin) {
-            return { message: "لا يسمح للمستخدمين بتغيير المخزون، راجع الادمن" , error: true};
+            return { message: t('stock-change-permissionDenied') , error: true};
         }
 
         // Check if stock for the given currency exists
@@ -56,11 +58,11 @@ export const SubtractFromStock = async (amount, currencyId) => {
         });
 
         if (!existingStock) {
-            return { message: "المخزون غير موجود لهذه العملة" , error: true};
+            return { message: t('stock-notFound')  , error: true};
         }
 
         if (existingStock.amount < amount) {
-            return { message: "المخزون غير كافٍ لهذه العملية" , error: true};
+            return { message: t('stock-notEnough') , error: true};
         }
 
         // Subtract the amount from stock
@@ -71,7 +73,7 @@ export const SubtractFromStock = async (amount, currencyId) => {
             },
         });
 
-        return { message: "تم خصم المخزون بنجاح" };
+        return { message: t('stock-Deducted') };
     } catch (e) {
         return { message: e.message };
     }

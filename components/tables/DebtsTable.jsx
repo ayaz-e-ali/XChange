@@ -6,11 +6,15 @@ import { deleteDebts } from "@/actions/debts";
 import { formatCurrency } from "@/lib/utils";
 import { useState } from "react";
 import { DebtsDialog } from "../dialogs/DebtsDialog";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function DebtsTable({ debts, revalidate }) {
     const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
+    const t = useTranslations('Debts');
+    const locale = useLocale();
 
     const handleDeleteButton = async (e, id) => {
+        e.stopPropagation();
         await deleteDebts(id);
         revalidate();
     };
@@ -32,14 +36,13 @@ export default function DebtsTable({ debts, revalidate }) {
             <TableHeader>
                 <TableRow>
                     <TableHead className="text-right"></TableHead>
-                    <TableHead className="text-right"></TableHead>
-                    <TableHead className="text-right">تاريخ الاضافة</TableHead>
+                    <TableHead className="text-right">{t('dateAdded')}</TableHead>
                     <TableHead className="text-right cursor-pointer" onClick={toggleSortOrder}>
-                        الملكية {sortOrder === 'asc' ? '↑' : '↓'}
+                        {t('owner')} {sortOrder === 'asc' ? '↑' : '↓'}
                     </TableHead>
-                    <TableHead className="text-right">المبلغ</TableHead>
-                    <TableHead className="text-right">االاسم</TableHead>
-                    <TableHead className="text-right">الرقم</TableHead>
+                    <TableHead className="text-right">{t('amount')}</TableHead>
+                    <TableHead className="text-right">{t('name')}</TableHead>
+                    <TableHead className="text-right">{t('id')}</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -47,11 +50,11 @@ export default function DebtsTable({ debts, revalidate }) {
                     <DebtsDialog key={debt.id} debt={debt} revalidate={revalidate}>
                         <TableRow >
                             <TableCell className="text-right w-8 font-medium">
-                                <Button size="xs" onClick={(e) => handleDeleteButton(e, debt.id)} variant='destructive'>حذف </Button>
+                                <Button size="xs" onClick={(e) => handleDeleteButton(e, debt.id)} variant='destructive'>{t('delete')} </Button>
                             </TableCell>
-                            <TableCell className="text-right font-medium">{debt.createDate.toDateString()}</TableCell>
+                            <TableCell className="text-right font-medium">{debt.createDate.toLocaleString(locale == 'en' ? 'en' : 'ar-EG', { hour12: true, year: '2-digit', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</TableCell>
                             <TableCell className="text-right font-medium">
-                                {debt.forUs ? "لنا" : "لهم"}
+                                {debt.forUs ? t('forUs') : t('forThem')}
                             </TableCell>
                             <TableCell className="flex place-self-end font-medium">
                                 {formatCurrency(debt.amount)} {debt.currency.code}
@@ -60,7 +63,6 @@ export default function DebtsTable({ debts, revalidate }) {
                             <TableCell className="text-right font-medium">{debt.id}</TableCell>
                         </TableRow>
                     </DebtsDialog>
-
                 ))}
             </TableBody>
         </Table>

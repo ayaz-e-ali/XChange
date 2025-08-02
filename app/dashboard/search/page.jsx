@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import Submit from '@/components/ui/SubmitButton';
 import { Label } from '@radix-ui/react-label';
 import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 
 export default function Page() {
@@ -15,6 +16,8 @@ export default function Page() {
   const [finish, setFinish] = useState(formatDate(new Date()));
 
   const [name, setName] = useState('');
+
+  const t = useTranslations('Search');
 
   const onClickHandler = async () => {
     const data = await getTransaction(start, finish, name);
@@ -41,23 +44,23 @@ export default function Page() {
       </div>
       <div className="col-span-1 border-l-8">
         <div className="p-3 flex flex-col gap-4 items-end">
-          <h3 className="text-right text-lg">بحث</h3>
+          <h3 className="text-right text-lg">{t('search')}</h3>
           <div className="flex items-center flex-row-reverse w-full gap-2 child:text-right text-sm relative">
-            <Label>من</Label>
+            <Label>{t('from')}</Label>
             <Input value={start} onChange={(e) => setStart(e.target.value)} className="font-bold child:p-2 cursor-pointer" size="lg" type="date" />
             <X className='absolute right-10 top-2 cursor-pointer' onClick={() => { setStart(""); }} />
           </div>
           <div className="flex items-center flex-row-reverse w-full gap-2 child:text-right text-sm relative">
-            <Label>الى</Label>
+            <Label>{t('to')}</Label>
             <Input value={finish} onChange={(e) => setFinish(e.target.value)} className="font-bold child:p-2 cursor-pointer" size="lg" type="date" />
             <X className='absolute right-10 top-2 cursor-pointer' onClick={() => { setFinish(""); }} />
           </div>
           <div className="flex items-center flex-row-reverse w-full gap-2 child:text-right text-sm relative">
-            <Label>الاسم</Label>
+            <Label>{t('name')}</Label>
             <Input value={name} onChange={(e) => setName(e.target.value)} className="font-bold child:p-2 pr-12" size="lg" />
             <X className='absolute right-10 top-2 cursor-pointer ' onClick={() => { setName(""); }} />
           </div>
-          <Submit label={'فرز'} onClick={onClickHandler} />
+          <Submit label={t('filter')} onClick={onClickHandler} />
         </div>
       </div>
       <div className="flex items-center justify-center gap-4 bg-sidebar border-sidebar-border border-t fixed bottom-0 left-56 h-40 w-[calc(100%-14rem)] text-right">
@@ -65,9 +68,9 @@ export default function Page() {
           Object.keys(stats).map((key, idx) => (
             <div className="bg-sidebar-accent px-4 py-2 m-4 rounded-md space-y-1" key={idx}>
               <h2> : {key}</h2>
-              <p>اجمالي المبلغ الوارد : {stats[key].incomingAmount}</p>
-              <p>اجمالي المبلغ الصادر : {stats[key].outgoingAmount}</p>
-              <p>الفرق : {stats[key].difference}</p>
+              <p>{t('totalIncoming')} : {stats[key].incomingAmount}</p>
+              <p>{t('totalOutgoing')} : {stats[key].outgoingAmount}</p>
+              <p>{t('netAmount')} : {stats[key].difference}</p>
             </div>
           ))
         }

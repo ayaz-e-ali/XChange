@@ -2,10 +2,11 @@
 import { MoonStar, Sun } from 'lucide-react';
 import { Button } from './button';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function ThemeToggle() {
     const [theme, setTheme] = useState('');
-
+    const t = useTranslations('Settings');
     useEffect(() => {
         const theme = window.localStorage.getItem('theme') || '';
         if (theme === 'dark') {
@@ -24,11 +25,11 @@ export default function ThemeToggle() {
         <>
             <Button onClick={handleClick}>
                 <p className='dark:hidden'>
-                    داكن
+                    {t('dark')}
                     <MoonStar size={'1.5em'} className='dark:hidden inline m-1' />
                 </p>
                 <p className='hidden dark:block'>
-                    مضيئ
+                    {t('light')}
                     <Sun size={'1.5em'} className='dark:inline m-1 inline' />
                 </p>
             </Button>

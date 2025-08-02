@@ -9,6 +9,7 @@ import { addDebt } from '@/actions/debts'
 import { useToast } from '@/hooks/use-toast'
 import { useEffect } from 'react'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
+import { useTranslations } from 'next-intl'
 
 const initState = { message: null }
 
@@ -16,6 +17,7 @@ export default function DebtsAddForm({ currencies, revalidate }) {
   const [formState, action] = useFormState(addDebt, initState)
 
   const { toast } = useToast()
+  const t = useTranslations('Debts')
 
   useEffect(() => {
     if (formState.message) {
@@ -38,15 +40,15 @@ export default function DebtsAddForm({ currencies, revalidate }) {
   return (
     <form action={action} className="p-3 flex flex-col gap-4 items-end">
       <div className="grid w-full gap-2 child:text-right">
-        <Label>الاسم</Label>
+        <Label>{t('name')}</Label>
         <Input tabIndex="1" className="" name="Name" type="text" />
       </div>
       <div className="grid w-full gap-2 child:text-right">
-        <Label>القيمة</Label>
+        <Label>{t('amount')}</Label>
         <Input tabIndex="2" className="font-bold text-xl" required name="Amount" type="number" />
       </div>
       <div className="grid w-full gap-2 child:text-right">
-        <Label>العملة</Label>
+        <Label>{t('currency')}</Label>
         <Select name="CurrencyId" defaultValue={"1"}>
           <SelectTrigger tabIndex="3" className="w-full">
             <SelectValue placeholder="" />
@@ -61,14 +63,14 @@ export default function DebtsAddForm({ currencies, revalidate }) {
       <RadioGroup className="flex gap-8" name="forUs" defaultValue="forUs">
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="forUs" id="forUs" />
-          <Label htmlFor="forUs">لنا</Label>
+          <Label htmlFor="forUs">{t('forUs')}</Label>
         </div>
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="forThem" id="forThem" />
-          <Label htmlFor="forThem">لهم</Label>
+          <Label htmlFor="forThem">{t('forThem')}</Label>
         </div>
       </RadioGroup>
-      <Submit label={"اضافة"} />
+      <Submit label={t('add')} />
     </form>
   )
 }

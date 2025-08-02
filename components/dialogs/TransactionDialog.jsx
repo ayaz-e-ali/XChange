@@ -11,11 +11,11 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { cn } from "@/lib/utils";
 import { Textarea } from "../ui/textarea";
 import { useState } from "react";
 import { updateTransaction } from "@/actions/transaction";
 import DialogInput from "../ui/DialogInput";
+import { useLocale, useTranslations } from "next-intl";
 
 export function TransactionDialog({ children, transaction, revalidate }) {
 
@@ -24,6 +24,8 @@ export function TransactionDialog({ children, transaction, revalidate }) {
     const [outgoingAmount, setOutgoingAmount] = useState(transaction.outgoingAmount);
     const [incomingAmount, setIncomingAmount] = useState(transaction.incomingAmount);
     const [note, setNote] = useState(transaction.note);
+
+    const t = useTranslations('EditTransaction');
 
     const onClickHandler = async (e) => {
         await updateTransaction({
@@ -44,20 +46,20 @@ export function TransactionDialog({ children, transaction, revalidate }) {
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>تفاصيل العملية <span className="text-xs font-thin">عند تعديل العملية اضغط على حفظ </span> </AlertDialogTitle>
-                    <AlertDialogDescription>الرقم : {transaction.transactionId}</AlertDialogDescription>
-                    <AlertDialogDescription>الاسم : <DialogInput value={name} onChange={(e) => setName(e.target.value)} />
+                    <AlertDialogTitle>{t('details')} <span className="text-xs font-thin">{t('pressSave')}</span> </AlertDialogTitle>
+                    <AlertDialogDescription>{t('id')} : {transaction.transactionId}</AlertDialogDescription>
+                    <AlertDialogDescription>{t('name')} : <DialogInput value={name} onChange={(e) => setName(e.target.value)} />
                     </AlertDialogDescription>
-                    <AlertDialogDescription>اسم المستخدم : {transaction.user.userName}</AlertDialogDescription>
-                    <AlertDialogDescription>تاريخ الاضافة : {transaction.createDate.toLocaleString('ar-EG')}</AlertDialogDescription>
-                    <AlertDialogDescription>سعر الصرف : <DialogInput type="number" value={exchangeRate} onChange={(e) => setExchangeRate(e.target.value)} /></AlertDialogDescription>
-                    <AlertDialogDescription>القيمة الصادرة : <DialogInput type="number" value={outgoingAmount} onChange={(e) => setOutgoingAmount(e.target.value)} /> {transaction.exchangeRate.outgoingCurrency.name}</AlertDialogDescription>
-                    <AlertDialogDescription>القيمة الواردة : <DialogInput type="number" value={incomingAmount} onChange={(e) => setIncomingAmount(e.target.value)} /> {transaction.exchangeRate.incomingCurrency.name}</AlertDialogDescription>
-                    <AlertDialogDescription className='w-full'>ملاحظات : <Textarea value={note} onChange={(e) => setNote(e.target.value)} /> </AlertDialogDescription>
+                    <AlertDialogDescription>{t('userName')} : {transaction.user.userName}</AlertDialogDescription>
+                    <AlertDialogDescription>{t('dateAdded')} : {transaction.createDate.toLocaleString('ar-EG')}</AlertDialogDescription>
+                    <AlertDialogDescription>{t('exchangeRate')} : <DialogInput type="number" value={exchangeRate} onChange={(e) => setExchangeRate(e.target.value)} /></AlertDialogDescription>
+                    <AlertDialogDescription>{t('inAmount')} : <DialogInput type="number" value={outgoingAmount} onChange={(e) => setOutgoingAmount(e.target.value)} /> {transaction.exchangeRate.outgoingCurrency.name}</AlertDialogDescription>
+                    <AlertDialogDescription>{t('outAmount')} : <DialogInput type="number" value={incomingAmount} onChange={(e) => setIncomingAmount(e.target.value)} /> {transaction.exchangeRate.incomingCurrency.name}</AlertDialogDescription>
+                    <AlertDialogDescription className='w-full'>{t('notes')} : <Textarea value={note} onChange={(e) => setNote(e.target.value)} /> </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel> الغاء</AlertDialogCancel>
-                    <AlertDialogAction onClick={onClickHandler}>حفظ</AlertDialogAction>
+                    <AlertDialogCancel> {t('cancel')}</AlertDialogCancel>
+                    <AlertDialogAction onClick={onClickHandler}>{t('save')}</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

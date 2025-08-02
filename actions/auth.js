@@ -4,6 +4,7 @@ import { signin, hashPW } from '@/lib/auth'
 import { z } from 'zod'
 import { redirect } from 'next/navigation'
 import { COOKIE_NAME } from '@/lib/constants'
+import { getTranslations } from 'next-intl/server'
 
 const authSchema = z.object({
     userName: z.string(),
@@ -11,6 +12,8 @@ const authSchema = z.object({
 })
 
 export const signinUser = async (prevState, formData) => {
+    const t = await getTranslations("Messages");
+
     const data = authSchema.parse({
         userName: formData.get('userName'),
         password: formData.get('password'),
@@ -23,7 +26,7 @@ export const signinUser = async (prevState, formData) => {
         cookies().set(COOKIE_NAME, token)
     } catch (e) {
         console.error(e)
-        return { message: `Failed to sign you in , ERROR:${e}` }
+        return { message: `${t('auth-signinFailed')} , ERROR:${e}` }
     }
     redirect('/dashboard')
 }

@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+const plugin = require('tailwindcss-dir');
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -68,6 +71,7 @@ module.exports = {
     }
   },
   plugins: [
+    plugin({ strategy: 'class' }),
     require("tailwindcss-animate"),
     function ({ addVariant }) {
       addVariant('child', '& > *');

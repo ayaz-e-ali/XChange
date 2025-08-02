@@ -15,11 +15,13 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOutUser } from "@/actions/auth";
+import { useTranslations } from "next-intl";
 
 export function AppSidebar({ user }) {
+    const t = useTranslations('Nav');
     const adminItems = [
         {
-            title: "المستخدمون",
+            title: t('users'),
             url: "/dashboard/users",
             icon: Users,
         }
@@ -27,22 +29,22 @@ export function AppSidebar({ user }) {
 
     const items = [
         {
-            title: "ايداع",
+            title: t('dashboard'),
             url: "/dashboard",
             icon: Home,
         },
         {
-            title: "عمليات الايداع",
+            title: t('search'),
             url: "/dashboard/search",
             icon: Search,
         },
         {
-            title: "الديون",
+            title: t("debts"),
             url: "/dashboard/debts",
             icon: HandCoins,
         },
         {
-            title: "الاعدادات",
+            title: t('settings'),
             url: "/dashboard/settings",
             icon: Settings,
         },
@@ -77,7 +79,7 @@ export function AppSidebar({ user }) {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton onClick={() => signOutUser()} size="lg">
-                            تسجيل الخروج
+                            {t('logout')}
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>

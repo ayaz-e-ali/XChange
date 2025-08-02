@@ -3,6 +3,7 @@ import { getCurrencies } from '@/actions/currency';
 import { getDebts } from '@/actions/debts';
 import DebtsAddForm from '@/components/forms/DebtsAddForm';
 import DebtsTable from '@/components/tables/DebtsTable';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -10,6 +11,8 @@ export default function Page() {
   const [debts, setDebts] = useState([]);
   const [stats, setStat] = useState({});
   const [currencies, setCurrencies] = useState([]);
+
+  const t = useTranslations('Debts');
 
   useEffect(() => {
     (async () => {
@@ -38,9 +41,9 @@ export default function Page() {
           Object.keys(stats).map((key, idx) => (
             <div className="bg-sidebar-accent px-4 py-2 m-4 rounded-md space-y-1" key={idx}>
               <h2> : {key}</h2>
-              <p>اجمالي الديون لنا : {stats[key].debtsForUs}</p>
-              <p>اجمالي الديون لهم : {stats[key].debtsForThem}</p>
-              <p>الفرق : {stats[key].balance}</p>
+              <p>{t('totalForUs')} : {stats[key].debtsForUs}</p>
+              <p>{t('totalForThem')} : {stats[key].debtsForThem}</p>
+              <p>{t('difference')} : {stats[key].balance}</p>
             </div>
           ))
         }

@@ -2,22 +2,34 @@ import React from 'react'
 import "./globals.css";
 import { Toaster } from '@/components/ui/toaster';
 import ApplyTheme from '@/components/nav/ApplyTheme';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale } from 'next-intl/server';
+import { cn } from '@/lib/utils';
 
-// TODO: add a local font
 
 export const metadata = {
   title: "XChange",
   description: "created by mohammed al-ali",
 };
 
-export default function BaseLayout({ children }) {
+export default async function BaseLayout({ children }) {
+
+  const locale = await getLocale();
+
   return (
-    <html lang="en">
-      <body className={`antialiased`}>
-        <ApplyTheme />
-        {children}
-        <Toaster />
+    <html lang={locale} >
+      <body className={cn(locale === 'ar' ? 'rtl' : 'ltr', "antialiased")} >
+        <NextIntlClientProvider>
+          <ApplyTheme />
+          {children}
+          <Toaster />
+        </NextIntlClientProvider>
       </body>
     </html>
   )
+}
+
+
+export function getDirection(locale) {
+  return locale === 'ar' ? 'rtl' : 'ltr';
 }
