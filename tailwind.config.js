@@ -1,6 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 
-const plugin = require('tailwindcss-dir');
+function languageVariantPlugin({ addVariant, e }) {
+  addVariant('ar', ({ modifySelectors, separator }) => {
+    modifySelectors(({ className }) => {
+      return `.ar .${e(`ar${separator}${className}`)}`;
+    });
+  });
+  addVariant('en', ({ modifySelectors, separator }) => {
+    modifySelectors(({ className }) => {
+      return `.en .${e(`en${separator}${className}`)}`;
+    });
+  });
+}
 
 module.exports = {
   darkMode: ["class"],
@@ -71,7 +82,7 @@ module.exports = {
     }
   },
   plugins: [
-    plugin({ strategy: 'class' }),
+    languageVariantPlugin,
     require("tailwindcss-animate"),
     function ({ addVariant }) {
       addVariant('child', '& > *');

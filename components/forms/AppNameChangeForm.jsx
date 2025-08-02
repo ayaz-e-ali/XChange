@@ -49,8 +49,8 @@ export default function AppNameChangeForm() {
 
     return (
         <form action={action} ref={formRef} className="flex flex-col gap-2 items-center justify-center">
-            <h3 className="text-right">{t('companyName')}</h3>
-            <Input value={appName} onChange={(e) => setAppName(e.target.value)} className="w-full text-right" required name="appName" type="text" placeholder={t('companyName')} />
+            <h3 className="ar:text-right">{t('companyName')}</h3>
+            <Input value={appName} onChange={(e) => setAppName(e.target.value)} className="w-full ar:text-right" required name="appName" type="text" placeholder={t('companyName')} />
             <Submit label={t('save')} />
         </form>
     )

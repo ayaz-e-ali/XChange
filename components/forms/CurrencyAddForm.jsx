@@ -40,11 +40,11 @@ export default function CurrencyAddForm() {
 
     return (
         <form action={action} ref={formRef} className="flex flex-col gap-2 items-center justify-center">
-            <h3 className="text-right">{t('addCurrency')}</h3>
-            <Input className="w-full text-right" required size="lg" name="name" type="text" placeholder={t('namePlaceholder')} />
-            <Input className="w-full text-right" required size="lg" name="code" type="text" placeholder={t('symbolPlaceholder')} />
-            <Submit label={t('save')} className="" />
-            {formState?.message && <p className="text-right">{formState.message}</p>}
+            <h3 >{t('addCurrency')}</h3>
+            <Input className="w-full ar:text-right" required size="lg" name="name" type="text" placeholder={t('namePlaceholder')} />
+            <Input className="w-full ar:text-right" required size="lg" name="code" type="text" placeholder={t('symbolPlaceholder')} />
+            <Submit label={t('save')} />
+            {formState?.message && <p className="ar:text-right">{formState.message}</p>}
         </form>
     )
 }

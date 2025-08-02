@@ -41,50 +41,50 @@ export default function TransactionsAddForm({ currencies }) {
     return (
         <form ref={formRef} action={action} className="p-3 flex flex-col gap-4 items-end">
             <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
-                <div className="grid w-full gap-2 child:text-right">
+                <div className="grid w-full gap-2 ar:child:text-right">
                     <Label>{t('outAmount')}</Label>
                     <Input tabIndex="2" className="font-bold child:p-2 text-xl" required name="outgoingAmount" type="number" />
                 </div>
-                <div className="grid w-full gap-2 child:text-right">
+                <div className="grid w-full gap-2 ar:child:text-right">
                     <Label>{t('inAmount')}</Label>
                     <Input tabIndex="1" className="font-bold child:p-2 text-xl" required name="incomingAmount" type="number" />
                 </div>
-                <div className="grid w-full gap-2 child:text-right">
+                <div className="grid w-full gap-2 ar:child:text-right">
                     <Label>{t('outCurrency')}</Label>
                     <Select name="outgoingCurrencyId" defaultValue='2' >
                         <SelectTrigger tabIndex="4" className="w-full">
                             <SelectValue placeholder="" />
                         </SelectTrigger>
-                        <SelectContent className="child:text-right">
+                        <SelectContent className="ar:child:text-right">
                             {currencies.map(currency =>
                                 <SelectItem key={currency.currencyId} value={currency.currencyId.toString()}>{currency.name}</SelectItem>
                             )}
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="grid w-full gap-2 child:text-right">
+                <div className="grid w-full gap-2 ar:child:text-right">
                     <Label>{t('inCurrency')}</Label>
                     <Select name="incomingCurrencyId" defaultValue='1'>
                         <SelectTrigger tabIndex="3" className="w-full">
                             <SelectValue placeholder="" />
                         </SelectTrigger>
-                        <SelectContent className="child:text-right">
+                        <SelectContent className="ar:child:text-right">
                             {currencies.map(currency =>
                                 <SelectItem key={currency.currencyId} value={currency.currencyId.toString()}>{currency.name}</SelectItem>
                             )}
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="grid w-full gap-2 child:text-right">
+                <div className="grid w-full gap-2 ar:child:text-right">
                     <Label>{t('name')}</Label>
                     <Input tabIndex="6" className="font-bold child:p-2 text-xl" size="lg" name="name" type="text" />
                 </div>
-                <div className="grid w-full gap-2 child:text-right">
+                <div className="grid w-full gap-2 ar:child:text-right">
                     <Label>{t('exchangeRate')}</Label>
                     <Input tabIndex="5" className="font-bold child:p-2 text-xl" required size="lg" name="exchangeRate" type="number" />
                 </div>
             </div>
-            <div className="grid w-full gap-2 child:text-right">
+            <div className="grid w-full gap-2 ar:child:text-right">
                 <Label>{t('notes')}</Label>
                 <Textarea tabIndex="7" size="lg" name="note" type="text" />
             </div>

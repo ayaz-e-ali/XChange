@@ -18,7 +18,7 @@ export default async function BaseLayout({ children }) {
 
   return (
     <html lang={locale} >
-      <body className={cn(locale === 'ar' ? 'rtl' : 'ltr', "antialiased")} >
+      <body className={cn(locale, "antialiased")} >
         <NextIntlClientProvider>
           <ApplyTheme />
           {children}

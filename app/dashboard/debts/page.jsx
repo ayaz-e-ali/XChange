@@ -36,7 +36,7 @@ export default function Page() {
       <div className="col-span-1 border-l-8">
         <DebtsAddForm currencies={currencies} revalidate={revalidate} />
       </div>
-      <div className="flex items-center justify-center gap-4 bg-sidebar border-sidebar-border border-t fixed bottom-0 left-56 h-40 w-[calc(100%-14rem)] text-right">
+      <div className="flex items-center justify-center gap-4 bg-sidebar border-sidebar-border border-t fixed bottom-0 left-56 h-40 w-[calc(100%-14rem)] ar:text-right">
         {
           Object.keys(stats).map((key, idx) => (
             <div className="bg-sidebar-accent px-4 py-2 m-4 rounded-md space-y-1" key={idx}>

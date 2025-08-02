@@ -37,7 +37,7 @@ export default function UserAddForm({ user, revalidate }) {
         }
 
         revalidate()
-        
+
     }, [formState.message])
 
     useEffect(() => {
@@ -54,11 +54,11 @@ export default function UserAddForm({ user, revalidate }) {
 
     return (
         <form action={action} className="p-3 flex flex-col gap-4 items-end">
-            <h3 className="text-right">{t('usersData')}</h3>
+            <h3 className="ar:text-right w-full">{t('usersData')}</h3>
             <Input className="hidden" name="id" type="number" defaultValue={id} />
-            <Input required size="lg" name="userName" type="text" placeholder={t('userName')} value={username} onChange={(e) => setUsername(e.target.value)} />
-            <Input name="password" size="lg" type="text" placeholder={t('password')} />
-            <div className="flex items-center space-x-2">
+            <Input className="ar:text-right" required size="lg" name="userName" type="text" placeholder={t('userName')} value={username} onChange={(e) => setUsername(e.target.value)} />
+            <Input className="ar:text-right" name="password" size="lg" type="text" placeholder={t('password')} />
+            <div className="flex w-full en:flex-row-reverse justify-end items-center gap-2">
                 <label
                     htmlFor="isAdmin"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">

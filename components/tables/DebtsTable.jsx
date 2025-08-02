@@ -35,32 +35,32 @@ export default function DebtsTable({ debts, revalidate }) {
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead className="text-right"></TableHead>
-                    <TableHead className="text-right">{t('dateAdded')}</TableHead>
-                    <TableHead className="text-right cursor-pointer" onClick={toggleSortOrder}>
+                    <TableHead className="ar:text-right"></TableHead>
+                    <TableHead className="ar:text-right">{t('dateAdded')}</TableHead>
+                    <TableHead className="ar:text-right cursor-pointer" onClick={toggleSortOrder}>
                         {t('owner')} {sortOrder === 'asc' ? '↑' : '↓'}
                     </TableHead>
-                    <TableHead className="text-right">{t('amount')}</TableHead>
-                    <TableHead className="text-right">{t('name')}</TableHead>
-                    <TableHead className="text-right">{t('id')}</TableHead>
+                    <TableHead className="ar:text-right">{t('amount')}</TableHead>
+                    <TableHead className="ar:text-right">{t('name')}</TableHead>
+                    <TableHead className="ar:text-right">{t('id')}</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {sortedDebts[0] && sortedDebts.map((debt) => (
                     <DebtsDialog key={debt.id} debt={debt} revalidate={revalidate}>
                         <TableRow >
-                            <TableCell className="text-right w-8 font-medium">
+                            <TableCell className="ar:text-right w-8 font-medium">
                                 <Button size="xs" onClick={(e) => handleDeleteButton(e, debt.id)} variant='destructive'>{t('delete')} </Button>
                             </TableCell>
-                            <TableCell className="text-right font-medium">{debt.createDate.toLocaleString(locale == 'en' ? 'en' : 'ar-EG', { hour12: true, year: '2-digit', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</TableCell>
-                            <TableCell className="text-right font-medium">
+                            <TableCell className="ar:text-right font-medium">{debt.createDate.toLocaleString(locale == 'en' ? 'en' : 'ar-EG', { hour12: true, year: '2-digit', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</TableCell>
+                            <TableCell className="ar:text-right font-medium">
                                 {debt.forUs ? t('forUs') : t('forThem')}
                             </TableCell>
-                            <TableCell className="flex place-self-end font-medium">
+                            <TableCell className="flex ar:place-self-end font-medium">
                                 {formatCurrency(debt.amount)} {debt.currency.code}
                             </TableCell>
-                            <TableCell className="text-right font-medium">{debt.name}</TableCell>
-                            <TableCell className="text-right font-medium">{debt.id}</TableCell>
+                            <TableCell className="ar:text-right font-medium">{debt.name}</TableCell>
+                            <TableCell className="ar:text-right font-medium">{debt.id}</TableCell>
                         </TableRow>
                     </DebtsDialog>
                 ))}
