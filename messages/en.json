@@ -9,7 +9,8 @@
         "debts": "debts",
         "settings": "settings",
         "dashboard": "deposit",
-        "logout": "logout"
+        "logout": "logout",
+        "error": "error"
     },
     "DashBoard": {
         "inAmount": "incoming amount",

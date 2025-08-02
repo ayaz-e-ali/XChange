@@ -9,7 +9,8 @@
         "debts": "الديون",
         "settings": "الاعدادات",
         "dashboard": "ايداع",
-        "logout": "تسجيل خروج"
+        "logout": "تسجيل خروج",
+        "error": "خطأ"
     },
     "DashBoard": {
         "inAmount": "القيمة الواردة",

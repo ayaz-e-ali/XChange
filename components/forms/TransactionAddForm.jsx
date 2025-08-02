@@ -18,18 +18,19 @@ export default function TransactionsAddForm({ currencies }) {
     const formRef = useRef();
     const { toast } = useToast();
     const t = useTranslations('DashBoard');
+    const tNav = useTranslations('Nav');
 
     useEffect(() => {
         if (formState.message) {
             if (formState.error)
                 toast({
-                    title: "خطأ",
+                    title: tNav('error'),
                     description: formState.message,
                     variant: "destructive"
                 });
             else {
                 toast({
-                    title: "تحويلات",
+                    title: tNav('dashboard'),
                     description: formState.message,
                 });
                 resetForm(formRef, ["exchangeRate", "outgoingCurrencyId", "incomingCurrencyId"]);

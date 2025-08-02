@@ -13,11 +13,11 @@ export default function LoginForm() {
 
     return (
         <form action={action} className="bg-sidebar border border-default-100 shadow-lg rounded-md p-4 flex flex-col gap-2 ">
-            <h3 className="my-4 text-right">{t('login')}</h3>
+            <h3 className="my-4 ar:text-right">{t('login')}</h3>
             <Input required size="lg" name="userName" type="text" />
             <Input name="password" required size="lg" type="password" />
             <Submit label={t('register')} className="mt-2 w-min" />
-            {formState?.message && <p className="text-right text-red-600">{formState.message}</p>}
+            {formState?.message && <p className="ar:text-right text-red-600">{formState.message}</p>}
         </form>
     )
 }

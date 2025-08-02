@@ -19,18 +19,19 @@ export default function UserAddForm({ user, revalidate }) {
     const { toast } = useToast()
 
     const t = useTranslations('Users');
+    const tNav = useTranslations('Nav');
 
     useEffect(() => {
         if (formState.message) {
             if (formState.error)
                 toast({
-                    title: "خطأ",
+                    title: tNav('error'),
                     description: formState.message,
                     variant: "destructive"
                 });
             else
                 toast({
-                    title: "مستخدمين",
+                    title: tNav('users'),
                     description: formState.message,
                 });
             formState.message = null
