@@ -96,7 +96,8 @@
         "namePlaceholder": "الاسم : دولار",
         "symbolPlaceholder": "الكود : USD",
         "save": "حفظ",
-        "companyName": "اسم الشركة"
+        "companyName": "اسم الشركة",
+        "language": "اللغة"
     },
     "Users": {
         "usersData": "بيانات المستخدمين",

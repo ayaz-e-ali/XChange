@@ -21,15 +21,15 @@ async function addData() {
     const currencies = await prisma.currency.createMany({
         data: [
             {
-                name: "ليرة سورية",
+                name: "Syrian Pound",
                 code: "L.S"
             },
             {
-                name: "دولار",
+                name: "US Dollar",
                 code: "USD"
             },
             {
-                name: "يورو",
+                name: "Euro",
                 code: "EUR"
             }
         ]

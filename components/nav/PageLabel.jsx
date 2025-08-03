@@ -37,7 +37,6 @@ export default function PageLabel() {
         <p className='flex flex-col items-center hover:text-primary text-primary/70 transition-colors gap-1'>
             <span className='text-xl font-bold flex gap-4'>
                 {title}
-                <LocaleSwitcher />
             </span>
         </p>
     </div>;

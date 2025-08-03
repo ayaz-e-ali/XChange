@@ -96,7 +96,8 @@
         "namePlaceholder": "name : Dollar",
         "symbolPlaceholder": "code : USD",
         "save": "save",
-        "companyName": "company name"
+        "companyName": "company name",
+        "language": "language"
     },
     "Users": {
         "usersData": "user data",

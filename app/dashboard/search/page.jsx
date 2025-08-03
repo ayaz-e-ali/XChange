@@ -45,19 +45,19 @@ export default function Page() {
       <div className="col-span-1 border-l-8">
         <div className="p-3 flex flex-col gap-4 items-end">
           <h3 className="ar:text-right w-full text-lg">{t('search')}</h3>
-          <div className="flex items-center ar:flex-row-reverse w-full gap-2 ar:child:text-right text-sm relative">
-            <Label>{t('from')}</Label>
-            <Input value={start} onChange={(e) => setStart(e.target.value)} className="font-bold child:p-2 cursor-pointer" size="lg" type="date" />
+          <div className="grid grid-cols-7 items-center w-full gap-2 ar:child:text-right text-sm relative">
+            <Label className='col-span-1' >{t('from')}</Label>
+            <Input value={start} onChange={(e) => setStart(e.target.value)} className="font-bold child:p-2 cursor-pointer col-span-6" size="lg" type="date" />
             <X className='absolute ar:right-10 en:right-2 top-2 cursor-pointer' onClick={() => { setStart(""); }} />
           </div>
-          <div className="flex items-center ar:flex-row-reverse w-full gap-2 ar:child:text-right text-sm relative">
-            <Label>{t('to')}</Label>
-            <Input value={finish} onChange={(e) => setFinish(e.target.value)} className="font-bold child:p-2 cursor-pointer" size="lg" type="date" />
+          <div className="grid grid-cols-7 items-center w-full gap-2 ar:child:text-right text-sm relative">
+            <Label className='col-span-1'>{t('to')}</Label>
+            <Input value={finish} onChange={(e) => setFinish(e.target.value)} className="font-bold child:p-2 cursor-pointer col-span-6" size="lg" type="date" />
             <X className='absolute ar:right-10 en:right-2 top-2 cursor-pointer' onClick={() => { setFinish(""); }} />
           </div>
-          <div className="flex items-center ar:flex-row-reverse w-full gap-2 ar:child:text-right text-sm relative">
-            <Label>{t('name')}</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} className="font-bold child:p-2 pr-12" size="lg" />
+          <div className="grid grid-cols-7 items-center w-full gap-2 ar:child:text-right text-sm relative">
+            <Label className='col-span-1'>{t('name')}</Label>
+            <Input value={name} onChange={(e) => setName(e.target.value)} className="font-bold child:p-2 pr-12 col-span-6" size="lg" />
             <X className='absolute ar:right-10 en:right-2 top-2 cursor-pointer ' onClick={() => { setName(""); }} />
           </div>
           <Submit label={t('filter')} onClick={onClickHandler} />

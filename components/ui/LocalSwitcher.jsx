@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
+import { Button } from './button';
 
 export default function LocaleSwitcher() {
     const router = useRouter();
@@ -16,17 +17,19 @@ export default function LocaleSwitcher() {
 
     return (
         <div className="flex gap-2">
-            <button
+            <Button
+                variant="secondary"
                 onClick={() => switchLocale('en')}
                 className={locale === 'en' ? 'font-bold' : ''}
             >
                 English
-            </button>
-            <button
+            </Button>
+            <Button
+                variant="secondary"
                 onClick={() => switchLocale('ar')}
                 className={locale === 'ar' ? 'font-bold' : ''}>
                 العربية
-            </button>
+            </Button>
         </div>
     );
 }
