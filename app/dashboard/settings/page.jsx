@@ -1,12 +1,12 @@
 'use client';
 import { getCurrencies } from '@/actions/currency';
 import AppNameChangeForm from '@/components/forms/AppNameChangeForm';
-import CurrencyAddForm from '@/components/forms/currencyAddForm';
+import CurrencyAddForm from '@/components/forms/currencyaddform';
 import StockManageForm from '@/components/forms/StockManageForm';
 import LocaleSwitcher from '@/components/ui/LocalSwitcher';
 import ThemeToggle from '@/components/ui/themeToggle';
 import { useTranslations } from 'next-intl';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Page() {
   const [currencies, setCurrencies] = useState([]);
